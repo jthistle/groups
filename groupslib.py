@@ -105,7 +105,7 @@ class Group:
     # Non-trivial only
     def subgroups(self):
         subgroups = []
-        for i in range(1, math.ceil(self.order ** (1/2)) + 1):
+        for i in range(1, math.ceil(self.order / 2) + 1):
             if self.order % i != 0:
                 # Laplace theorem
                 continue
@@ -127,12 +127,12 @@ class Group:
                 if newGrp.isGroup():
                     subgroups.append(newGrp)
         return subgroups
-        
-    def __str__(self):
+
+    def strCayleyTable(self):
         cayley = Texttable()
 
         rows = []
-        rows.append(["."] + self.elements)
+        rows.append(["."] + list(self.elements))
         for r in range(self.order):
             row = [self.elements[r]]
             for c in range(self.order):
@@ -141,6 +141,9 @@ class Group:
 
         cayley.add_rows(rows)
 
+        return cayley.draw()
+        
+    def __str__(self):
         orderTable = Texttable()
         rows = []
         rows.append(["Element:"] + self.elements)
@@ -164,7 +167,7 @@ Generators: {}
 Cyclic: {}
 
 Non-trivial subgroups: \n{}
-""".format(self.isGroup(), self.order, self.ident, cayley.draw(), orderTable.draw(), gens, self.isCyclic(), subGrpStr)
+""".format(self.isGroup(), self.order, self.ident, self.strCayleyTable(), orderTable.draw(), gens, self.isCyclic(), subGrpStr)
     
 
 def visibleToInternal(table):
