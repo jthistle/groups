@@ -102,7 +102,7 @@ class Group:
     def isGroup(self):
         return self.ident is not None and self.closed and self.inversable
 
-    # Non-trivial only
+    # Non-trivial and proper only
     def subgroups(self):
         subgroups = []
         for i in range(1, math.ceil(self.order / 2) + 1):
@@ -166,7 +166,7 @@ Generators: {}
 
 Cyclic: {}
 
-Non-trivial subgroups: \n{}
+Non-trivial & proper subgroups: \n{}
 """.format(self.isGroup(), self.order, self.ident, self.strCayleyTable(), orderTable.draw(), gens, self.isCyclic(), subGrpStr)
     
 
