@@ -102,6 +102,13 @@ class Group:
     def isGroup(self):
         return self.ident is not None and self.closed and self.inversable
 
+    def inverse(self, element):
+        c = self.cayleyTable[self.elements.index(element)]
+        for i in range(len(c)):
+            if c[i] == self.ident:
+                return self.elements[i]
+        return None
+
     # Non-trivial and proper only
     def subgroups(self):
         subgroups = []
@@ -148,6 +155,7 @@ class Group:
         rows = []
         rows.append(["Element:"] + self.elements)
         rows.append(["Order:"] + self.elementOrders)
+        rows.append(["Inverse:"] + [self.inverse(x) for x in self.elements])
         orderTable.add_rows(rows)
 
         gens = ", ".join([str(x) for x in self.generators]) or "None"
@@ -173,9 +181,9 @@ Non-trivial & proper subgroups: \n{}
 def visibleToInternal(table):
     """Convert a visible table in form [row][column] to internal format of [column][row]"""
     new = []
-    for i in range(6):
+    for i in range(len(table)):
         c = []
-        for j in range(6):
+        for j in range(len(table[i])):
             c.append(table[j][i])
         new.append(c)
     return new
