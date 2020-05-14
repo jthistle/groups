@@ -44,6 +44,7 @@ class Group:
             self.cayleyTable.append(column)
 
     def getIdent(self):
+        # TODO fix
         for r in range(self.order):
             isSame = True
             for c in range(self.order):
@@ -150,7 +151,7 @@ class Group:
 
         return cayley.draw()
         
-    def __str__(self):
+    def validStr(self):
         orderTable = Texttable()
         rows = []
         rows.append(["Element:"] + self.elements)
@@ -176,7 +177,22 @@ Cyclic: {}
 
 Non-trivial & proper subgroups: \n{}
 """.format(self.isGroup(), self.order, self.ident, self.strCayleyTable(), orderTable.draw(), gens, self.isCyclic(), subGrpStr)
-    
+
+    def invalidStr(self):
+        return """
+Not a group! One of these failed:
+Inversable: {}
+Closed: {}
+Identity: {}
+
+Cayley table: \n{}
+""".format(self.inversable, self.closed, self.ident, self.strCayleyTable())
+
+    def __str__(self):
+        if self.valid:
+            return self.validStr()
+        else:
+            return self.invalidStr()
 
 def visibleToInternal(table):
     """Convert a visible table in form [row][column] to internal format of [column][row]"""

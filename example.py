@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from groupslib import Group, visibleToInternal
+from libgroups import Group, visibleToInternal
 
 # You can create a group instance from a Cayley table and the set of elements.
 # Make sure to use visibleToInternal if your Cayley table is in the form [row][column].
