@@ -162,7 +162,7 @@ class Group:
         gens = ", ".join([str(x) for x in self.generators]) or "None"
 
         sub = self.subgroups()
-        subGrpStr = "\n".join([str(x.elements) for x in sub])
+        subGrpStr = "\n".join([str([str(y) for y in x.elements]) for x in sub])
 
         return """
 Is a group: {}
@@ -203,3 +203,35 @@ def visibleToInternal(table):
             c.append(table[j][i])
         new.append(c)
     return new
+
+
+class Element:
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+    def isApproxEq(self, b, approximation):
+        return abs(b.value - self.value) <= approximation
+
+    def __str__(self):
+        return self.name
+
+import numpy
+
+def formCayleyTable(elements, operation, approximation):
+    table = []
+    for a in elements:
+        c = []
+        for b in elements:
+            value = operation(a, b)
+            found = False
+            for e in elements:
+                if e.isApproxEq(value, approximation):
+                    c.append(e)
+                    found = True
+                    break
+            if not found:
+                print("Couldn't find same element in set!")
+                return False
+        table.append(c)
+    return table
